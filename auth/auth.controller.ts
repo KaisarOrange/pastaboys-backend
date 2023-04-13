@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../db';
+import { jwtTokens } from '../utils/jwtFun';
 const bcrypt = require('bcrypt');
 
 const login = async (req: Request, res: Response) => {
@@ -15,8 +16,11 @@ const login = async (req: Request, res: Response) => {
       req.body.password,
       login.rows[0].password
     );
-
-    res.status(200).json({ status: 'success', user: check });
+    if (check === true) {
+      const tokens = jwtTokens(login.rows[0]);
+      res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true });
+      res.json(tokens);
+    }
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

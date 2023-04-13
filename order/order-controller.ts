@@ -4,6 +4,7 @@ import db from '../db';
 const express = require('express');
 
 const getCustomer = (req: Request, res: Response) => {
+  console.log(req.body.user);
   db.query('SELECT * FROM customer', (err: Error, results: any) => {
     if (err) {
       throw err;

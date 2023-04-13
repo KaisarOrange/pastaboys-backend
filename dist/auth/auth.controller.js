@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signup = exports.login = void 0;
 const db_1 = __importDefault(require("../db"));
+const jwtFun_1 = require("../utils/jwtFun");
 const bcrypt = require('bcrypt');
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -22,7 +23,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(401).json({ message: 'incorrect username' });
         }
         const check = yield bcrypt.compare(req.body.password, login.rows[0].password);
-        res.status(200).json({ status: 'success', user: check });
+        if (check === true) {
+            const tokens = (0, jwtFun_1.jwtTokens)(login.rows[0]);
+            res.cookie('refresh_token', tokens.refreshToken, { httpOnly: true });
+            res.json(tokens);
+        }
     }
     catch (error) {
         res.status(500).json({ error: error.message });

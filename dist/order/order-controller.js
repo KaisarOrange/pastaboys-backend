@@ -16,6 +16,7 @@ exports.insertOrder = exports.deleteCustomer = exports.getCustomer = void 0;
 const db_1 = __importDefault(require("../db"));
 const express = require('express');
 const getCustomer = (req, res) => {
+    console.log(req.body.user);
     db_1.default.query('SELECT * FROM customer', (err, results) => {
         if (err) {
             throw err;
