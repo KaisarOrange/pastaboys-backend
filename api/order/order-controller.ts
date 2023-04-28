@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
-import db from '../db';
+import db from '../../db';
 
 const express = require('express');
 
 const getCustomer = (req: Request, res: Response) => {
-  console.log(req.body.user);
-  db.query('SELECT * FROM customer', (err: Error, results: any) => {
-    if (err) {
-      throw err;
+  db.query(
+    'SELECT orders.id as order_id ,customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id',
+    (err: Error, results: any) => {
+      if (err) {
+        throw err;
+      }
+      res.status(200).json({ data: results.rows });
     }
-    res.status(200).json({ data: results.rows });
-  });
+  );
 };
 
 const insertOrder = async (req: Request, res: Response) => {

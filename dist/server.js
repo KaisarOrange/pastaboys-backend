@@ -5,14 +5,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const get = require('./order/order-routes');
-const auth = require('./auth/auth-routes');
+const index_1 = __importDefault(require("./db/index"));
+const get = require('./api/order/order-routes');
+const auth = require('./api/auth/auth-routes');
+const session = require('express-session');
+var passport = require('passport');
+const path = require('node:path');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const pgSimpleStore = require('connect-pg-simple')(session);
 dotenv_1.default.config();
+require('./middleware/passportAuth');
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express_1.default.json());
+app.use(cookieParser());
+app.use(express_1.default.static(path.join(__dirname, 'public')));
+app.use(session({
+    store: new pgSimpleStore({
+        pool: index_1.default,
+    }),
+    secret: process.env.SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+    // Insert express-session options here
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.authenticate('session'));
 app.use('/order', get);
 app.use('/auth', auth);
 //app.use(express.urlencoded());

@@ -1,16 +1,44 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-const get = require('./order/order-routes');
-const auth = require('./auth/auth-routes');
+import db from './db/index';
+const get = require('./api/order/order-routes');
+const auth = require('./api/auth/auth-routes');
+const session = require('express-session');
+var passport = require('passport');
+const path = require('node:path');
 const cors = require('cors');
-dotenv.config();
+const cookieParser = require('cookie-parser');
 
+const pgSimpleStore = require('connect-pg-simple')(session);
+dotenv.config();
+require('./middleware/passportAuth');
 const app = express();
 
 const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+  session({
+    store: new pgSimpleStore({
+      pool: db,
+    }),
+    secret: process.env.SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+    // Insert express-session options here
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(passport.authenticate('session'));
+
 app.use('/order', get);
 app.use('/auth', auth);
 //app.use(express.urlencoded());

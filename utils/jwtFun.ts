@@ -8,8 +8,12 @@ type jwtParams = {
 
 const jwtTokens = ({ user_id, email, username }: jwtParams) => {
   const user = { user_id, email, username };
-  const accessToken = jwt.sign(user, 'hehexd', { expiresIn: '20s' });
-  const refreshToken = jwt.sign(user, 'hehelmao', { expiresIn: '5m' });
+  const accessToken = jwt.sign(user, process.env.JWT_ACCESS_SECRET, {
+    expiresIn: '20s',
+  });
+  const refreshToken = jwt.sign(user, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: '5m',
+  });
 
   return { accessToken, refreshToken };
 };
