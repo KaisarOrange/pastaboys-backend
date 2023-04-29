@@ -5,7 +5,20 @@ const express = require('express');
 
 const getCustomer = (req: Request, res: Response) => {
   db.query(
-    'SELECT orders.id as order_id ,customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id',
+    'SELECT orders.order_id, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id ',
+    (err: Error, results: any) => {
+      if (err) {
+        throw err;
+      }
+      res.status(200).json({ data: results.rows });
+    }
+  );
+};
+
+const getDetail = (req: Request, res: Response) => {
+  db.query(
+    'SELECT orders.order_id, customer_id, product.product_id, quantity, note, name, price from orders INNER JOIN order_product on orders.order_id = order_product.order_id INNER JOIN product on order_product.product_id = product.product_id WHERE customer_id = $1',
+    [req.params.id],
     (err: Error, results: any) => {
       if (err) {
         throw err;
@@ -67,4 +80,4 @@ const deleteCustomer = async (req: Request, res: Response) => {
   }
 };
 
-export { getCustomer, deleteCustomer, insertOrder };
+export { getCustomer, deleteCustomer, insertOrder, getDetail };

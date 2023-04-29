@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertOrder = exports.deleteCustomer = exports.getCustomer = void 0;
+exports.getDetail = exports.insertOrder = exports.deleteCustomer = exports.getCustomer = void 0;
 const db_1 = __importDefault(require("../../db"));
 const express = require('express');
 const getCustomer = (req, res) => {
-    db_1.default.query('SELECT orders.id as order_id ,customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id', (err, results) => {
+    db_1.default.query('SELECT orders.order_id, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id ', (err, results) => {
         if (err) {
             throw err;
         }
@@ -24,6 +24,15 @@ const getCustomer = (req, res) => {
     });
 };
 exports.getCustomer = getCustomer;
+const getDetail = (req, res) => {
+    db_1.default.query('SELECT orders.order_id, customer_id, product.product_id, quantity, note, name, price from orders INNER JOIN order_product on orders.order_id = order_product.order_id INNER JOIN product on order_product.product_id = product.product_id WHERE customer_id = $1', [req.params.id], (err, results) => {
+        if (err) {
+            throw err;
+        }
+        res.status(200).json({ data: results.rows });
+    });
+};
+exports.getDetail = getDetail;
 const insertOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const client = yield db_1.default.connect();
     try {
