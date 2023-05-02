@@ -39,7 +39,10 @@ passport.use(new localStrategy(function verify(username, password, done) {
 }));
 passport.serializeUser(function (user, cb) {
     process.nextTick(function () {
-        cb(null, { id: user.rows[0].user_id, username: user.rows[0].username });
+        cb(null, {
+            id: user.rows[0].user_id,
+            username: user.rows[0].username,
+        });
     });
 });
 passport.deserializeUser(function (user, cb) {

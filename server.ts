@@ -16,7 +16,12 @@ const app = express();
 
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
+
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -29,7 +34,7 @@ app.use(
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+    cookie: { maxAge: 10000 }, // 30 days
     // Insert express-session options here
   })
 );

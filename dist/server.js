@@ -18,7 +18,11 @@ dotenv_1.default.config();
 require('./middleware/passportAuth');
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 4000;
-app.use(cors());
+const corsConfig = {
+    origin: true,
+    credentials: true,
+};
+app.use(cors(corsConfig));
 app.use(express_1.default.json());
 app.use(cookieParser());
 app.use(express_1.default.static(path.join(__dirname, 'public')));
@@ -29,7 +33,7 @@ app.use(session({
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+    cookie: { maxAge: 10000 }, // 30 days
     // Insert express-session options here
 }));
 app.use(passport.initialize());

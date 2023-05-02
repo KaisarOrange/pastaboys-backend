@@ -15,17 +15,7 @@ router.get('/', getCustomer);
 router.get('/detail/:id', getDetail);
 
 router.get('/test', (req: any, res: any) => {
-  console.log('hehe ', req.session.passport.user);
-  res.send({ message: req.isAuthenticated() });
-});
-router.get('/testLogOut', (req: any, res: any, next: any) => {
-  req.logout(function (err: any) {
-    if (err) {
-      return next(err);
-    }
-
-    console.log(req.isAuthenticated());
-  });
+  res.send(req.user);
 });
 
 router.post('/pesan', insertOrder);

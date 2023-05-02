@@ -42,7 +42,10 @@ passport.use(
 
 passport.serializeUser(function (user: any, cb: any) {
   process.nextTick(function () {
-    cb(null, { id: user.rows[0].user_id, username: user.rows[0].username });
+    cb(null, {
+      id: user.rows[0].user_id,
+      username: user.rows[0].username,
+    });
   });
 });
 
