@@ -34,7 +34,7 @@ app.use(
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 10000 }, // 30 days
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
     // Insert express-session options here
   })
 );
@@ -44,8 +44,9 @@ app.use(passport.session());
 
 app.use(passport.authenticate('session'));
 
-app.use('/order', get);
 app.use('/auth', auth);
+app.use('/order', get);
+
 //app.use(express.urlencoded());
 
 app.listen(PORT, () => {

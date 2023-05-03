@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authCheck = void 0;
 const authCheck = (req, res, next) => {
     if (req.isAuthenticated()) {
-        next();
+        return next();
     }
     else {
-        res.send('You are not authenticated!!!');
+        res.status(401).json({ message: 'You are not authenticated!' });
     }
 };
 exports.authCheck = authCheck;

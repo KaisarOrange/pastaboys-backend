@@ -5,12 +5,28 @@ const express = require('express');
 
 const getCustomer = (req: Request, res: Response) => {
   db.query(
-    'SELECT orders.order_id, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id ',
+    'SELECT orders.order_id, orders.done, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1',
+    [req.params.done],
     (err: Error, results: any) => {
       if (err) {
         throw err;
       }
       res.status(200).json({ data: results.rows });
+    }
+  );
+};
+
+const finishOrder = (req: Request, res: Response) => {
+  db.query(
+    'UPDATE orders SET done = $1  WHERE order_id = $2 RETURNING *',
+    [true, req.body.order_id],
+    (err: Error, result: any) => {
+      if (err) {
+        throw err;
+      }
+      res
+        .status(200)
+        .json({ data: result, message: 'success to finish order' });
     }
   );
 };
@@ -80,4 +96,4 @@ const deleteCustomer = async (req: Request, res: Response) => {
   }
 };
 
-export { getCustomer, deleteCustomer, insertOrder, getDetail };
+export { getCustomer, deleteCustomer, insertOrder, getDetail, finishOrder };

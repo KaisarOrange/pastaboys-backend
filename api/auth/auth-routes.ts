@@ -21,7 +21,6 @@ router.post('/login', (req: any, res: any, next: any) => {
 });
 
 router.get('/user', (req: any, res: any) => {
-  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     res.status(200).json(req.user);
   } else {

@@ -1,8 +1,8 @@
 const authCheck = (req: any, res: any, next: any) => {
   if (req.isAuthenticated()) {
-    next();
+    return next();
   } else {
-    res.send('You are not authenticated!!!');
+    res.status(401).json({ message: 'You are not authenticated!' });
   }
 };
 
