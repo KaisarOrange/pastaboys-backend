@@ -5,6 +5,7 @@ import {
   insertOrder,
   getDetail,
   finishOrder,
+  revokeFinishOrder,
 } from './order-controller';
 import { authCheck } from '../../middleware/authCheck';
 
@@ -12,7 +13,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-router.get('/getOrder/:done', authCheck, getCustomer);
+router.get('/getOrder/:done/:page', authCheck, getCustomer);
 router.get('/detail/:id', authCheck, getDetail);
 
 router.get('/test', (req: any, res: any) => {
@@ -20,6 +21,7 @@ router.get('/test', (req: any, res: any) => {
 });
 
 router.put('/finishOrder', authCheck, finishOrder);
+router.put('/revokeFinishOrder', authCheck, revokeFinishOrder);
 
 router.post('/pesan', insertOrder);
 

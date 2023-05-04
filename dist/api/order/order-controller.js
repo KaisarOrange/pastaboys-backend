@@ -12,13 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.finishOrder = exports.getDetail = exports.insertOrder = exports.deleteCustomer = exports.getCustomer = void 0;
+exports.revokeFinishOrder = exports.finishOrder = exports.getDetail = exports.insertOrder = exports.deleteCustomer = exports.getCustomer = void 0;
 const db_1 = __importDefault(require("../../db"));
 const express = require('express');
 const getCustomer = (req, res) => {
-    db_1.default.query('SELECT orders.order_id, orders.done, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1', [req.params.done], (err, results) => {
+    const page = parseInt(req.params.page) < 1 ? 0 : parseInt(req.params.page);
+    const itemPage = (page - 1) * 2;
+    db_1.default.query('SELECT orders.order_id, orders.done, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 LIMIT 2 OFFSET $2', [req.params.done, itemPage], (err, results) => {
         if (err) {
-            throw err;
+            res.status(401).json({ message: err });
         }
         res.status(200).json({ data: results.rows });
     });
@@ -27,7 +29,7 @@ exports.getCustomer = getCustomer;
 const finishOrder = (req, res) => {
     db_1.default.query('UPDATE orders SET done = $1  WHERE order_id = $2 RETURNING *', [true, req.body.order_id], (err, result) => {
         if (err) {
-            throw err;
+            res.status(401).json({ message: err });
         }
         res
             .status(200)
@@ -35,10 +37,21 @@ const finishOrder = (req, res) => {
     });
 };
 exports.finishOrder = finishOrder;
+const revokeFinishOrder = (req, res) => {
+    db_1.default.query('UPDATE orders SET done = $1  WHERE order_id = $2 RETURNING *', [false, req.body.order_id], (err, result) => {
+        if (err) {
+            res.status(401).json({ message: err });
+        }
+        res
+            .status(200)
+            .json({ data: result, message: 'success to revoke finish order' });
+    });
+};
+exports.revokeFinishOrder = revokeFinishOrder;
 const getDetail = (req, res) => {
     db_1.default.query('SELECT orders.order_id, customer_id, product.product_id, quantity, note, name, price from orders INNER JOIN order_product on orders.order_id = order_product.order_id INNER JOIN product on order_product.product_id = product.product_id WHERE customer_id = $1', [req.params.id], (err, results) => {
         if (err) {
-            throw err;
+            res.status(401).json({ message: err });
         }
         res.status(200).json({ data: results.rows });
     });
