@@ -7,6 +7,7 @@ const router = express.Router();
 const passport = require('passport');
 router.get('/getOrder/:done/:page', authCheck_1.authCheck, order_controller_1.getCustomer);
 router.get('/detail/:id', authCheck_1.authCheck, order_controller_1.getDetail);
+router.get('/totalrows/:done', authCheck_1.authCheck, order_controller_1.getTotalRows);
 router.get('/test', (req, res) => {
     res.send(req.user);
 });

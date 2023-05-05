@@ -6,9 +6,9 @@ const express = require('express');
 
 const getCustomer = (req: any, res: any) => {
   const page = parseInt(req.params.page) < 1 ? 0 : parseInt(req.params.page);
-  const itemPage = (page - 1) * 2;
+  const itemPage = (page - 1) * 5;
   db.query(
-    'SELECT orders.order_id, orders.done, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 LIMIT 2 OFFSET $2',
+    'SELECT orders.order_id, orders.done, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 LIMIT 5 OFFSET $2',
     [req.params.done, itemPage],
     (err: Error, results: any) => {
       if (err) {
@@ -30,6 +30,20 @@ const finishOrder = (req: any, res: any) => {
       res
         .status(200)
         .json({ data: result, message: 'success to finish order' });
+    }
+  );
+};
+
+const getTotalRows = (req: any, res: any) => {
+  db.query(
+    'SELECT COUNT(*) FROM orders INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1',
+    [req.params.done],
+    (err: Error, results: any) => {
+      if (err) {
+        res.status(401).json({ message: err });
+      } else {
+        res.status(200).json({ data: results.rows[0] });
+      }
     }
   );
 };
@@ -121,4 +135,5 @@ export {
   getDetail,
   finishOrder,
   revokeFinishOrder,
+  getTotalRows,
 };

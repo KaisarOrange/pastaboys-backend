@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.revokeFinishOrder = exports.finishOrder = exports.getDetail = exports.insertOrder = exports.deleteCustomer = exports.getCustomer = void 0;
+exports.getTotalRows = exports.revokeFinishOrder = exports.finishOrder = exports.getDetail = exports.insertOrder = exports.deleteCustomer = exports.getCustomer = void 0;
 const db_1 = __importDefault(require("../../db"));
 const express = require('express');
 const getCustomer = (req, res) => {
     const page = parseInt(req.params.page) < 1 ? 0 : parseInt(req.params.page);
-    const itemPage = (page - 1) * 2;
-    db_1.default.query('SELECT orders.order_id, orders.done, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 LIMIT 2 OFFSET $2', [req.params.done, itemPage], (err, results) => {
+    const itemPage = (page - 1) * 5;
+    db_1.default.query('SELECT orders.order_id, orders.done, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 LIMIT 5 OFFSET $2', [req.params.done, itemPage], (err, results) => {
         if (err) {
             res.status(401).json({ message: err });
         }
@@ -37,6 +37,17 @@ const finishOrder = (req, res) => {
     });
 };
 exports.finishOrder = finishOrder;
+const getTotalRows = (req, res) => {
+    db_1.default.query('SELECT COUNT(*) FROM orders INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1', [req.params.done], (err, results) => {
+        if (err) {
+            res.status(401).json({ message: err });
+        }
+        else {
+            res.status(200).json({ data: results.rows[0] });
+        }
+    });
+};
+exports.getTotalRows = getTotalRows;
 const revokeFinishOrder = (req, res) => {
     db_1.default.query('UPDATE orders SET done = $1  WHERE order_id = $2 RETURNING *', [false, req.body.order_id], (err, result) => {
         if (err) {
