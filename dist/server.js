@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const index_1 = __importDefault(require("./db/index"));
 const get = require('./api/order/order-routes');
 const auth = require('./api/auth/auth-routes');
+const finance = require('./api/finance/finance-routes');
 const session = require('express-session');
 var passport = require('passport');
 const path = require('node:path');
@@ -41,6 +42,7 @@ app.use(passport.session());
 app.use(passport.authenticate('session'));
 app.use('/auth', auth);
 app.use('/order', get);
+app.use('/finance', finance);
 //app.use(express.urlencoded());
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
