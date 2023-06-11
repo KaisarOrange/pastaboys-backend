@@ -18,12 +18,12 @@ const pgSimpleStore = require('connect-pg-simple')(session);
 dotenv_1.default.config();
 require('./middleware/passportAuth');
 const app = (0, express_1.default)();
-const port = process.env.PORT || 3000;
-const corsConfig = {
-    origin: true,
-    credentials: true,
-};
-app.use(cors(corsConfig));
+const port = process.env.PORT || 8500;
+// const corsConfig = {
+//   origin: true,
+//   credentials: true,
+// };
+app.use(cors());
 app.use(express_1.default.json());
 app.use(cookieParser());
 app.use(express_1.default.static(path.join(__dirname, 'public')));
