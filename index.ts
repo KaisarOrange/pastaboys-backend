@@ -29,31 +29,31 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// // app.use(
-// //   session({
-// //     store: new pgSimpleStore({
-// //       pool: db,
-// //     }),
-// //     secret: process.env.SECRET,
-// //     saveUninitialized: false,
-// //     resave: false,
-// //     cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
-// //     // Insert express-session options here
-// //   })
-// // );
+app.use(
+  session({
+    store: new pgSimpleStore({
+      pool: db,
+    }),
+    secret: process.env.SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
+    // Insert express-session options here
+  })
+);
 app.get('/', function (req, res) {
   res.send(
     `server is running on port ${port} ${process.env.PGHOST} ${process.env.PGPASSWORD}`
   );
 });
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-// app.use(passport.authenticate('session'));
+app.use(passport.authenticate('session'));
 
-// app.use('/auth', auth);
-// app.use('/order', get);
-// app.use('/finance', finance);
+app.use('/auth', auth);
+app.use('/order', get);
+app.use('/finance', finance);
 
 //app.use(express.urlencoded());
 
