@@ -40,7 +40,7 @@ const porta = process.env.PORTA;
 // //   })
 // // );
 app.get('/', function (req, res) {
-    res.send(`server is running on port ${port}`);
+    res.send(`server is running on port ${porta} ${process.env.PGHOST} ${process.env.PGPASSWORD}`);
 });
 // app.use(passport.initialize());
 // app.use(passport.session());
