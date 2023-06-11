@@ -41,6 +41,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('session'));
 app.use('/auth', auth);
+app.get('/', function (req, res) {
+    res.send('GeeksforGeeksaaaaaaaaaa');
+});
 app.use('/order', get);
 app.use('/finance', finance);
 //app.use(express.urlencoded());
