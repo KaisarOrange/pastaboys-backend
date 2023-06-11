@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import db from '../../db';
+import db from '../../db/db';
 import { type } from 'os';
 
 const express = require('express');

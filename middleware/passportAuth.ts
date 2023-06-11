@@ -3,7 +3,7 @@ const session = require('express-session');
 const express = require('express');
 const bcrypt = require('bcrypt');
 var cookieParser = require('cookie-parser');
-import db from '../db';
+import db from '../db/db';
 
 const localStrategy = require('passport-local');
 

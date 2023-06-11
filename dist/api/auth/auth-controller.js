@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signup = void 0;
-const index_1 = __importDefault(require("../../db/index"));
+const db_1 = __importDefault(require("../../db/db"));
 const bcrypt = require('bcrypt');
 // const login = async (req: Request, res: Response) => {
 //   try {
@@ -40,12 +40,12 @@ const bcrypt = require('bcrypt');
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const hashedPassword = yield bcrypt.hash(req.body.password, 10);
-        const user = yield index_1.default.query('SELECT username FROM auth_user WHERE username = $1 OR email = $2', [req.body.username, req.body.email]);
+        const user = yield db_1.default.query('SELECT username FROM auth_user WHERE username = $1 OR email = $2', [req.body.username, req.body.email]);
         console.log(user);
         if (user.rows.length > 0) {
             return res.status(401).json({ message: 'user already exist' });
         }
-        const sign = yield index_1.default.query('INSERT INTO auth_user (email, username, password) VALUES ($1, $2, $3) RETURNING *', [req.body.email, req.body.username, hashedPassword]);
+        const sign = yield db_1.default.query('INSERT INTO auth_user (email, username, password) VALUES ($1, $2, $3) RETURNING *', [req.body.email, req.body.username, hashedPassword]);
         res.status(200).json({ user: sign.rows[0] });
     }
     catch (error) {

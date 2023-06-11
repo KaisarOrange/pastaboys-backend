@@ -17,7 +17,7 @@ const session = require('express-session');
 const express = require('express');
 const bcrypt = require('bcrypt');
 var cookieParser = require('cookie-parser');
-const db_1 = __importDefault(require("../db"));
+const db_1 = __importDefault(require("../db/db"));
 const localStrategy = require('passport-local');
 const app = express();
 passport.use(new localStrategy(function verify(username, password, done) {

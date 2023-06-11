@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import db from './db/index';
+import db from './db/db';
 const get = require('./api/order/order-routes');
 const auth = require('./api/auth/auth-routes');
 const finance = require('./api/finance/finance-routes');

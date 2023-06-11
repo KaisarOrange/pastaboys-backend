@@ -1,4 +1,4 @@
-import db from '../../db';
+import db from '../../db/db';
 
 const getProductStatSum = (req: any, res: any) => {
   db.query(
