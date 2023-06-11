@@ -15,7 +15,7 @@ dotenv.config();
 require('./middleware/passportAuth');
 const app = express();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 const corsConfig = {
   origin: true,
