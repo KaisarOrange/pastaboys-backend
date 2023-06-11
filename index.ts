@@ -15,39 +15,43 @@ dotenv.config();
 require('./middleware/passportAuth');
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
-const corsConfig = {
-  origin: true,
-  credentials: true,
-};
+const porta = process.env.PORTA;
 
-app.use(cors(corsConfig));
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// const corsConfig = {
+//   origin: true,
+//   credentials: true,
+// };
 
-app.use(
-  session({
-    store: new pgSimpleStore({
-      pool: db,
-    }),
-    secret: process.env.SECRET,
-    saveUninitialized: false,
-    resave: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
-    // Insert express-session options here
-  })
-);
+// app.use(cors(corsConfig));
+// app.use(express.json());
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// // app.use(
+// //   session({
+// //     store: new pgSimpleStore({
+// //       pool: db,
+// //     }),
+// //     secret: process.env.SECRET,
+// //     saveUninitialized: false,
+// //     resave: false,
+// //     cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
+// //     // Insert express-session options here
+// //   })
+// // );
+app.get('/', function (req, res) {
+  res.send(`server is running on port ${port}`);
+});
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-app.use(passport.authenticate('session'));
+// app.use(passport.authenticate('session'));
 
-app.use('/auth', auth);
-app.use('/order', get);
-app.use('/finance', finance);
+// app.use('/auth', auth);
+// app.use('/order', get);
+// app.use('/finance', finance);
 
 //app.use(express.urlencoded());
 
