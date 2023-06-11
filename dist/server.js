@@ -18,7 +18,7 @@ const pgSimpleStore = require('connect-pg-simple')(session);
 dotenv_1.default.config();
 require('./middleware/passportAuth');
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 const corsConfig = {
     origin: true,
     credentials: true,
@@ -44,6 +44,6 @@ app.use('/auth', auth);
 app.use('/order', get);
 app.use('/finance', finance);
 //app.use(express.urlencoded());
-app.listen(PORT, () => {
-    console.log(`server is running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`server is running on port ${port}`);
 });
