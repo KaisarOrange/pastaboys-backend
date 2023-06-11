@@ -15,7 +15,7 @@ dotenv.config();
 require('./middleware/passportAuth');
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 const porta = process.env.PORTA;
 
@@ -42,27 +42,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 // //   })
 // // );
 app.get('/', function (req, res) {
-  db.query(
-    'SELECT * FROM orders',
-    [true, req.body.order_id],
-    (err: Error, result: any) => {
-      if (err) {
-        res.status(401).json({ message: err });
-      }
-      res
-        .status(200)
-        .json({ data: result, message: 'success to finish order' });
-    }
+  res.send(
+    `server is running on port ${port} ${process.env.PGHOST} ${process.env.PGPASSWORD}`
   );
 });
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-app.use(passport.authenticate('session'));
+// app.use(passport.authenticate('session'));
 
-app.use('/auth', auth);
-app.use('/order', get);
-app.use('/finance', finance);
+// app.use('/auth', auth);
+// app.use('/order', get);
+// app.use('/finance', finance);
 
 //app.use(express.urlencoded());
 
