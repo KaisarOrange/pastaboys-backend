@@ -73,8 +73,7 @@ const insertOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         yield client.query('BEGIN');
         const result = yield client.query('INSERT INTO customer (name, number, adress) values ($1, $2, $3) RETURNING id', [req.body.name, req.body.number, req.body.adress]);
-        //console.log('Customer ID ', result.rows[0].id);
-        const resultOrder = yield client.query('INSERT INTO orders(customer_id) VALUES ($1) RETURNING id', [result.rows[0].id]);
+        const resultOrder = yield client.query('INSERT INTO orders(customer_id) VALUES ($1) RETURNING order_id', [result.rows[0].id]);
         for (let i = 0; i < req.body.order.length; i++) {
             let note = req.body.order[i].note
                 ? req.body.order[i].note

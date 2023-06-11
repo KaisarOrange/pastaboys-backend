@@ -85,10 +85,9 @@ const insertOrder = async (req: Request, res: Response) => {
       'INSERT INTO customer (name, number, adress) values ($1, $2, $3) RETURNING id',
       [req.body.name, req.body.number, req.body.adress]
     );
-    //console.log('Customer ID ', result.rows[0].id);
 
     const resultOrder = await client.query(
-      'INSERT INTO orders(customer_id) VALUES ($1) RETURNING id',
+      'INSERT INTO orders(customer_id) VALUES ($1) RETURNING order_id',
       [result.rows[0].id]
     );
 

@@ -17,8 +17,6 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-const porta = process.env.PORTA;
-
 const corsConfig = {
   origin: true,
   credentials: true,
@@ -41,11 +39,7 @@ app.use(
     // Insert express-session options here
   })
 );
-app.get('/', function (req, res) {
-  res.send(
-    `server is running on port ${port} ${process.env.PGHOST} ${process.env.PGPASSWORD}`
-  );
-});
+
 app.use(passport.initialize());
 app.use(passport.session());
 

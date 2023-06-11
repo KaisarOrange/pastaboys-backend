@@ -19,7 +19,6 @@ dotenv_1.default.config();
 require('./middleware/passportAuth');
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
-const porta = process.env.PORTA;
 const corsConfig = {
     origin: true,
     credentials: true,
@@ -38,9 +37,6 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
     // Insert express-session options here
 }));
-app.get('/', function (req, res) {
-    res.send(`server is running on port ${port} ${process.env.PGHOST} ${process.env.PGPASSWORD}`);
-});
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('session'));
