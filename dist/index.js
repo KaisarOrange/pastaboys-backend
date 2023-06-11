@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const db_1 = __importDefault(require("./db/db"));
 const get = require('./api/order/order-routes');
 const auth = require('./api/auth/auth-routes');
 const finance = require('./api/finance/finance-routes');
@@ -17,16 +18,16 @@ const pgSimpleStore = require('connect-pg-simple')(session);
 dotenv_1.default.config();
 require('./middleware/passportAuth');
 const app = (0, express_1.default)();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const porta = process.env.PORTA;
-// const corsConfig = {
-//   origin: true,
-//   credentials: true,
-// };
-// app.use(cors(corsConfig));
-// app.use(express.json());
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+const corsConfig = {
+    origin: true,
+    credentials: true,
+};
+app.use(cors(corsConfig));
+app.use(express_1.default.json());
+app.use(cookieParser());
+app.use(express_1.default.static(path.join(__dirname, 'public')));
 // // app.use(
 // //   session({
 // //     store: new pgSimpleStore({
@@ -40,14 +41,21 @@ const porta = process.env.PORTA;
 // //   })
 // // );
 app.get('/', function (req, res) {
-    res.send(`server is running on port ${porta} ${process.env.PGHOST} ${process.env.PGPASSWORD}`);
+    db_1.default.query('SELECT * FROM orders', [true, req.body.order_id], (err, result) => {
+        if (err) {
+            res.status(401).json({ message: err });
+        }
+        res
+            .status(200)
+            .json({ data: result, message: 'success to finish order' });
+    });
 });
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(passport.authenticate('session'));
-// app.use('/auth', auth);
-// app.use('/order', get);
-// app.use('/finance', finance);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.authenticate('session'));
+app.use('/auth', auth);
+app.use('/order', get);
+app.use('/finance', finance);
 //app.use(express.urlencoded());
 app.listen(port, () => {
     console.log(`server is running on port ${port}`);

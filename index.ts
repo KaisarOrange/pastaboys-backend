@@ -15,19 +15,19 @@ dotenv.config();
 require('./middleware/passportAuth');
 const app = express();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 const porta = process.env.PORTA;
 
-// const corsConfig = {
-//   origin: true,
-//   credentials: true,
-// };
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
 
-// app.use(cors(corsConfig));
-// app.use(express.json());
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors(corsConfig));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // // app.use(
 // //   session({
@@ -42,18 +42,27 @@ const porta = process.env.PORTA;
 // //   })
 // // );
 app.get('/', function (req, res) {
-  res.send(
-    `server is running on port ${porta} ${process.env.PGHOST} ${process.env.PGPASSWORD}`
+  db.query(
+    'SELECT * FROM orders',
+    [true, req.body.order_id],
+    (err: Error, result: any) => {
+      if (err) {
+        res.status(401).json({ message: err });
+      }
+      res
+        .status(200)
+        .json({ data: result, message: 'success to finish order' });
+    }
   );
 });
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-// app.use(passport.authenticate('session'));
+app.use(passport.authenticate('session'));
 
-// app.use('/auth', auth);
-// app.use('/order', get);
-// app.use('/finance', finance);
+app.use('/auth', auth);
+app.use('/order', get);
+app.use('/finance', finance);
 
 //app.use(express.urlencoded());
 
