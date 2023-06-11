@@ -17,41 +17,37 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-// const corsConfig = {
-//   origin: true,
-//   credentials: true,
-// };
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
 
-// app.use(cors(corsConfig));
-// app.use(express.json());
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors(corsConfig));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(
-//   session({
-//     store: new pgSimpleStore({
-//       pool: db,
-//     }),
-//     secret: process.env.SECRET,
-//     saveUninitialized: false,
-//     resave: false,
-//     cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
-//     // Insert express-session options here
-//   })
-// );
+app.use(
+  session({
+    store: new pgSimpleStore({
+      pool: db,
+    }),
+    secret: process.env.SECRET,
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
+    // Insert express-session options here
+  })
+);
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-// app.use(passport.authenticate('session'));
+app.use(passport.authenticate('session'));
 
-app.get('/', function (req, res) {
-  res.send('GeeksforGeeksaaaaaaaaaa');
-});
-// app.use('/auth', auth);
-
-// app.use('/order', get);
-// app.use('/finance', finance);
+app.use('/auth', auth);
+app.use('/order', get);
+app.use('/finance', finance);
 
 //app.use(express.urlencoded());
 
