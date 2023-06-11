@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const db_1 = __importDefault(require("./db/db"));
 const get = require('./api/order/order-routes');
 const auth = require('./api/auth/auth-routes');
 const finance = require('./api/finance/finance-routes');
@@ -27,16 +26,18 @@ app.use(cors(corsConfig));
 app.use(express_1.default.json());
 app.use(cookieParser());
 app.use(express_1.default.static(path.join(__dirname, 'public')));
-app.use(session({
-    store: new pgSimpleStore({
-        pool: db_1.default,
-    }),
-    secret: process.env.SECRET,
-    saveUninitialized: false,
-    resave: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
-    // Insert express-session options here
-}));
+// app.use(
+//   session({
+//     store: new pgSimpleStore({
+//       pool: db,
+//     }),
+//     secret: process.env.SECRET,
+//     saveUninitialized: false,
+//     resave: false,
+//     cookie: { maxAge: 1000 * 60 * 60 * 24 * 1 }, // 30 days
+//     // Insert express-session options here
+//   })
+// );
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.authenticate('session'));
