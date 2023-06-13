@@ -17,12 +17,12 @@ const app = express();
 
 const port = process.env.PORT || 8500;
 
-// const corsConfig = {
-//   origin: true,
-//   credentials: true,
-// };
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
 
-app.use(cors());
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
