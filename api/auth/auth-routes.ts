@@ -24,7 +24,7 @@ router.get('/user', (req: any, res: any) => {
   if (req.isAuthenticated()) {
     res.status(200).json(req.user);
   } else {
-    res.send(200, false);
+    res.send(200, req.user);
   }
 });
 
