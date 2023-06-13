@@ -95,11 +95,10 @@ const insertOrder = async (req: Request, res: Response) => {
       let note: string = req.body.order[i].note
         ? req.body.order[i].note
         : 'tidak ada catatan';
-
       const resultOrderProduct = await client.query(
         'INSERT INTO order_product(order_id, product_id, quantity, note) VALUES ($1, $2, $3, $4);',
         [
-          resultOrder.rows[0].id,
+          resultOrder.rows[0].order_id,
           req.body.order[i].product_id,
           req.body.order[i].quantity,
           note,

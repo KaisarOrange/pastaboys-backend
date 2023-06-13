@@ -79,7 +79,7 @@ const insertOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 ? req.body.order[i].note
                 : 'tidak ada catatan';
             const resultOrderProduct = yield client.query('INSERT INTO order_product(order_id, product_id, quantity, note) VALUES ($1, $2, $3, $4);', [
-                resultOrder.rows[0].id,
+                resultOrder.rows[0].order_id,
                 req.body.order[i].product_id,
                 req.body.order[i].quantity,
                 note,

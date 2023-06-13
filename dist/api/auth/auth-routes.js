@@ -9,7 +9,7 @@ router.post('/login', (req, res, next) => {
         if (err)
             throw err;
         if (!user) {
-            res.send('no user');
+            res.status(404).json({ message: 'user not found' });
         }
         else {
             req.login(user, (err) => {
@@ -26,7 +26,7 @@ router.get('/user', (req, res) => {
         res.status(200).json(req.user);
     }
     else {
-        res.send(200, req.user);
+        res.status(200).json(req.user);
     }
 });
 router.delete('/logout', (req, res, next) => {
