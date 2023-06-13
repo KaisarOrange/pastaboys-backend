@@ -19,11 +19,11 @@ dotenv_1.default.config();
 require('./middleware/passportAuth');
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8500;
-// const corsConfig = {
-//   origin: true,
-//   credentials: true,
-// };
-app.use(cors());
+const corsConfig = {
+    origin: true,
+    credentials: true,
+};
+app.use(cors(corsConfig));
 app.use(express_1.default.json());
 app.use(cookieParser());
 app.use(express_1.default.static(path.join(__dirname, 'public')));
