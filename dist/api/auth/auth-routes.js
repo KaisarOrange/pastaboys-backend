@@ -15,18 +15,23 @@ router.post('/login', (req, res, next) => {
             req.login(user, (err) => {
                 if (err)
                     throw err;
-                res.send('auth good');
+                res.status(200).send('auth good');
                 console.log(req.user.rows);
             });
         }
     })(req, res, next);
 });
 router.get('/user', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.status(200).json(req.user);
+    try {
+        if (req.isAuthenticated()) {
+            res.status(200).json({ isAuthenticated: true });
+        }
+        else {
+            res.status(200).json({ isAuthenticated: false });
+        }
     }
-    else {
-        res.status(200).json(req.user);
+    catch (error) {
+        res.status(401).json({ message: error });
     }
 });
 router.delete('/logout', (req, res, next) => {
@@ -34,7 +39,7 @@ router.delete('/logout', (req, res, next) => {
         if (err) {
             return next(err);
         }
-        res.send('user Logged Out!');
+        res.status(200).send('user Logged Out! :');
     });
 });
 router.post('/signup', auth_controller_1.signup);

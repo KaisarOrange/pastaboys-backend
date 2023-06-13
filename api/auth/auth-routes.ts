@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { signup } from './auth-controller';
+import { error } from 'console';
 
 const express = require('express');
 const router = express.Router();
@@ -13,7 +14,7 @@ router.post('/login', (req: any, res: any, next: any) => {
     } else {
       req.login(user, (err: any) => {
         if (err) throw err;
-        res.send('auth good');
+        res.status(200).send('auth good');
         console.log(req.user.rows);
       });
     }
@@ -21,10 +22,14 @@ router.post('/login', (req: any, res: any, next: any) => {
 });
 
 router.get('/user', (req: any, res: any) => {
-  if (req.isAuthenticated()) {
-    res.status(200).json(req.user);
-  } else {
-    res.status(200).json(req.user);
+  try {
+    if (req.isAuthenticated()) {
+      res.status(200).json({ isAuthenticated: true });
+    } else {
+      res.status(200).json({ isAuthenticated: false });
+    }
+  } catch (error) {
+    res.status(401).json({ message: error });
   }
 });
 
@@ -33,7 +38,7 @@ router.delete('/logout', (req: any, res: any, next: any) => {
     if (err) {
       return next(err);
     }
-    res.send('user Logged Out!');
+    res.status(200).send('user Logged Out! :');
   });
 });
 router.post('/signup', signup);
