@@ -14,7 +14,8 @@ router.post('/login', (req: any, res: any, next: any) => {
     } else {
       req.login(user, (err: any) => {
         if (err) throw err;
-        res.status(200).send('auth good');
+        res.status(200).json({ message: 'login success' });
+        console.log('first');
       });
     }
   })(req, res, next);
@@ -25,7 +26,7 @@ router.get('/user', (req: any, res: any) => {
     if (req.isAuthenticated()) {
       res.status(200).json({ isAuthenticated: true });
     } else {
-      res.status(200).json({ isAuthenticated: true });
+      res.status(200).json({ isAuthenticated: false });
     }
   } catch (error) {
     res.status(401).json({ message: error });
