@@ -24,4 +24,16 @@ const getTotalSumRevenue = (req: any, res: any) => {
   );
 };
 
-export { getProductStatSum, getTotalSumRevenue };
+const getTotalOrderedProduct = (req: any, res: any) => {
+  db.query(
+    'SELECT SUM (quantity) as total_order from order_product INNER JOIN product on order_product.product_id = product.product_id INNER JOIN orders on order_product.order_id = orders.order_id where done = true',
+    (err: Error, result: any) => {
+      if (err) {
+        throw err;
+      }
+      res.status(200).json({ data: result.rows });
+    }
+  );
+};
+
+export { getProductStatSum, getTotalSumRevenue, getTotalOrderedProduct };
