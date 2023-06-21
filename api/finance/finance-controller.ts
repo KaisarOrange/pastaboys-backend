@@ -19,11 +19,7 @@ const getTotalSumRevenue = (req: any, res: any) => {
       if (err) {
         throw err;
       }
-      if (!result.rows.total_price) {
-        res.status(200).json({ data: 0 });
-      } else {
-        res.status(200).json({ data: result.rows });
-      }
+      res.status(200).json({ data: result.rows });
     }
   );
 };
