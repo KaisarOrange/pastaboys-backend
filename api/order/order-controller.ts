@@ -76,7 +76,7 @@ const getDetail = (req: Request, res: Response) => {
   );
 };
 
-const insertOrder = async (req: Request, res: Response) => {
+const insertOrder = async (req: Request, res: Response, next: any) => {
   const client = await db.connect();
   try {
     await client.query('BEGIN');
@@ -113,6 +113,7 @@ const insertOrder = async (req: Request, res: Response) => {
   } finally {
     client.release();
   }
+  next();
 };
 
 const deleteCustomer = async (req: Request, res: Response) => {

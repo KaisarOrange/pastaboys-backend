@@ -68,7 +68,7 @@ const getDetail = (req, res) => {
     });
 };
 exports.getDetail = getDetail;
-const insertOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const insertOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const client = yield db_1.default.connect();
     try {
         yield client.query('BEGIN');
@@ -95,6 +95,7 @@ const insertOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     finally {
         client.release();
     }
+    next();
 });
 exports.insertOrder = insertOrder;
 const deleteCustomer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

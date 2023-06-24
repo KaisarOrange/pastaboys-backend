@@ -14,6 +14,11 @@ var passport = require('passport');
 const path = require('node:path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { Client, LegacySessionAuth, LocalAuth } = require('whatsapp-web.js');
+const client = new Client({
+    authStrategy: new LocalAuth(),
+});
+const qrcode = require('qrcode-terminal');
 const pgSimpleStore = require('connect-pg-simple')(session);
 dotenv_1.default.config();
 require('./middleware/passportAuth');
@@ -44,6 +49,7 @@ app.use('/auth', auth);
 app.use('/order', get);
 app.use('/finance', finance);
 //app.use(express.urlencoded());
+//WEBWJS
 app.listen(port, () => {
     console.log(`server is running on port ${port}`);
 });
