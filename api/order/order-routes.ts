@@ -12,6 +12,9 @@ import { authCheck } from '../../middleware/authCheck';
 const { Client, LegacySessionAuth, LocalAuth } = require('whatsapp-web.js');
 const client = new Client({
   authStrategy: new LocalAuth(),
+  puppeteer: {
+    args: ['--no-sandbox'],
+  },
 });
 const qrcode = require('qrcode-terminal');
 const express = require('express');
