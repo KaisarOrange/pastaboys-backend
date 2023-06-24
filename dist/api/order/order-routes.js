@@ -19,9 +19,6 @@ client.on('ready', () => {
     console.log('Client is ready!');
 });
 client.on('message', (message) => {
-    console.log(message.body);
-});
-client.on('message', (message) => {
     if (message.body === '!ping') {
         message.reply('Halo ini pesan otomatis');
     }

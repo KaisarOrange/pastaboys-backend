@@ -30,9 +30,6 @@ client.on('ready', () => {
 });
 
 client.on('message', (message: any) => {
-  console.log(message.body);
-});
-client.on('message', (message: any) => {
   if (message.body === '!ping') {
     message.reply('Halo ini pesan otomatis');
   }
