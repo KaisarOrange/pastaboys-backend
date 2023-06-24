@@ -9,10 +9,7 @@ var passport = require('passport');
 const path = require('node:path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { Client, LegacySessionAuth, LocalAuth } = require('whatsapp-web.js');
-const client = new Client({
-  authStrategy: new LocalAuth(),
-});
+
 const qrcode = require('qrcode-terminal');
 
 const pgSimpleStore = require('connect-pg-simple')(session);

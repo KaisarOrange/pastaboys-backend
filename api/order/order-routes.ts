@@ -54,7 +54,7 @@ const sendMessagetoPasya = (req: any, res: any) => {
     }
   });
   client.getChats().then((chat: any) => {
-    const myGroup = chat.find((e: any) => e.name === 'URUSAN DAGANG');
+    const myGroup = chat.find((e: any) => e.name === 'Alif Kuliah');
     client.sendMessage(
       myGroup.id._serialized,
       `*New Order*\nNama: ${req.body.name}\nNo.Hp: ${req.body.number}\nPesanan: ${ordera}`
