@@ -49,7 +49,7 @@ const sendMessagetoPasya = (req: any, res: any) => {
         return `Carbonara ${e.quantity} `;
       case 2:
         return `Chicken Mushroom ${e.quantity} `;
-      case 3:
+      case 5:
         return `Fettuccine Mushroom ${e.quantity} `;
     }
   });
