@@ -36,11 +36,11 @@ app.use(
     store: new pgSimpleStore({
       pool: db,
     }),
-    httpOnly: false,
+
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 1, secure: false }, // 30 days
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 1, httpOnly: false }, // 30 days
     // Insert express-session options here
   })
 );
