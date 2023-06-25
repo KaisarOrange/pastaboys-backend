@@ -24,7 +24,7 @@ const corsConfig = {
   credentials: true,
 };
 
-app.use(cors(corsConfig));
+app.use(cors({ credentials: true, origin: 'https://pastaboys.shop' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
