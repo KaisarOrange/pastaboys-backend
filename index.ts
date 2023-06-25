@@ -36,6 +36,7 @@ app.use(
     store: new pgSimpleStore({
       pool: db,
     }),
+    httpOnly: false,
     secret: process.env.SECRET,
     saveUninitialized: false,
     resave: false,
