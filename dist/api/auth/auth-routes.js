@@ -27,7 +27,7 @@ router.get('/user', (req, res) => {
             res.status(200).json({ isAuthenticated: true });
         }
         else {
-            res.status(200).json({ isAuthenticated: true });
+            res.status(200).json({ isAuthenticated: false });
         }
     }
     catch (error) {
