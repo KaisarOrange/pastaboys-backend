@@ -18,7 +18,7 @@ const express = require('express');
 const getCustomer = (req, res) => {
     const page = parseInt(req.params.page) < 1 ? 0 : parseInt(req.params.page);
     const itemPage = (page - 1) * 5;
-    db_1.default.query('SELECT orders.order_id, orders.done, orders.date, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 LIMIT 5 OFFSET $2', [req.params.done, itemPage], (err, results) => {
+    db_1.default.query('SELECT orders.order_id, orders.done, orders.date, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 ORDER BY date DESC LIMIT 5 OFFSET $2', [req.params.done, itemPage], (err, results) => {
         if (err) {
             res.status(401).json({ message: err });
         }
