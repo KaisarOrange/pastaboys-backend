@@ -75,7 +75,7 @@ const insertOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         yield client.query('BEGIN');
         const result = yield client.query('INSERT INTO customer (name, number, adress) values ($1, $2, $3) RETURNING id', [req.body.name, req.body.number, req.body.adress]);
-        const resultOrder = yield client.query(`INSERT INTO orders(customer_id, date, delivery_time) VALUES ($1, $2) RETURNING order_id`, [result.rows[0].id, date, req.body.time]);
+        const resultOrder = yield client.query(`INSERT INTO orders(customer_id, date, delivery_time) VALUES ($1, $2, $3) RETURNING order_id`, [result.rows[0].id, date, req.body.time]);
         for (let i = 0; i < req.body.order.length; i++) {
             let note = req.body.order[i].note
                 ? req.body.order[i].note
@@ -92,6 +92,7 @@ const insertOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
     catch (err) {
         yield client.query('ROLLBACK');
+        res.status(401).json({ message: err });
         throw err;
     }
     finally {

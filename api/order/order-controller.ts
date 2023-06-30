@@ -89,7 +89,7 @@ const insertOrder = async (req: Request, res: Response, next: any) => {
     );
 
     const resultOrder = await client.query(
-      `INSERT INTO orders(customer_id, date, delivery_time) VALUES ($1, $2) RETURNING order_id`,
+      `INSERT INTO orders(customer_id, date, delivery_time) VALUES ($1, $2, $3) RETURNING order_id`,
       [result.rows[0].id, date, req.body.time]
     );
 
@@ -111,6 +111,7 @@ const insertOrder = async (req: Request, res: Response, next: any) => {
     await client.query('COMMIT');
   } catch (err) {
     await client.query('ROLLBACK');
+    res.status(401).json({ message: err });
     throw err;
   } finally {
     client.release();
