@@ -8,7 +8,7 @@ const getCustomer = (req: any, res: any) => {
   const page = parseInt(req.params.page) < 1 ? 0 : parseInt(req.params.page);
   const itemPage = (page - 1) * 5;
   db.query(
-    'SELECT orders.order_id, orders.done, orders.date, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 ORDER BY date DESC LIMIT 5 OFFSET $2',
+    'SELECT orders.order_id, orders.done, orders.date, orders.delivery_time, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 ORDER BY date DESC LIMIT 5 OFFSET $2',
     [req.params.done, itemPage],
     (err: Error, results: any) => {
       if (err) {
