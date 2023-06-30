@@ -89,8 +89,8 @@ const insertOrder = async (req: Request, res: Response, next: any) => {
     );
 
     const resultOrder = await client.query(
-      `INSERT INTO orders(customer_id, date) VALUES ($1, $2) RETURNING order_id`,
-      [result.rows[0].id, date]
+      `INSERT INTO orders(customer_id, date, delivery_time) VALUES ($1, $2) RETURNING order_id`,
+      [result.rows[0].id, date, req.body.time]
     );
 
     for (let i = 0; i < req.body.order.length; i++) {
