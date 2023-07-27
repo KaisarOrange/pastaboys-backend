@@ -10,8 +10,6 @@ const path = require('node:path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-const qrcode = require('qrcode-terminal');
-
 const pgSimpleStore = require('connect-pg-simple')(session);
 dotenv.config();
 require('./middleware/passportAuth');

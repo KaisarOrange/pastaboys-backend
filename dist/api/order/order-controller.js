@@ -18,7 +18,7 @@ const express = require('express');
 const getCustomer = (req, res) => {
     const page = parseInt(req.params.page) < 1 ? 0 : parseInt(req.params.page);
     const itemPage = (page - 1) * 5;
-    db_1.default.query('SELECT orders.order_id, orders.done, orders.date, orders.delivery_time, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 ORDER BY date DESC LIMIT 5 OFFSET $2', [req.params.done, itemPage], (err, results) => {
+    db_1.default.query('SELECT orders.order_id, orders.done, orders.date, customer.*  FROM orders  INNER JOIN customer ON orders.customer_id = customer.id AND orders.done = $1 ORDER BY date DESC LIMIT 5 OFFSET $2', [req.params.done, itemPage], (err, results) => {
         if (err) {
             res.status(401).json({ message: err });
         }
@@ -75,7 +75,7 @@ const insertOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         yield client.query('BEGIN');
         const result = yield client.query('INSERT INTO customer (name, number, adress) values ($1, $2, $3) RETURNING id', [req.body.name, req.body.number, req.body.adress]);
-        const resultOrder = yield client.query(`INSERT INTO orders(customer_id, date, delivery_time) VALUES ($1, $2, $3) RETURNING order_id`, [result.rows[0].id, date, req.body.time]);
+        const resultOrder = yield client.query(`INSERT INTO orders(customer_id, date) VALUES ($1, $2) RETURNING order_id`, [result.rows[0].id, date]);
         for (let i = 0; i < req.body.order.length; i++) {
             let note = req.body.order[i].note
                 ? req.body.order[i].note
